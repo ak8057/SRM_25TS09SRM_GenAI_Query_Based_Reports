@@ -11,3 +11,5 @@ def upload_ui(db_selected):
             result = upload_file("temp_upload.xlsx", table_name, db_selected["db_name"])
         st.success(f"Table created: {result.get('table_name')}")
         st.write(result)
+
+
