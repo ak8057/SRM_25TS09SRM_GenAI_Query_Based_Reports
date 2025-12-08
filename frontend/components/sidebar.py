@@ -4,12 +4,19 @@ from utils.api import BASE_URL
 import requests
 
 def sidebar_ui():
-    st.sidebar.title("⚙️ Settings")
+    st.sidebar.header("⚙️ Database Settings")
 
     
 
     # --- Step 1: Select Database ---
     db_response = list_databases()
+    
+    # Check for connection errors
+    if "error" in db_response:
+        st.sidebar.error(db_response["error"])
+        st.sidebar.info("💡 Make sure the backend server is running: `uvicorn main:app --reload`")
+        return None
+    
     databases = db_response.get("databases", [])
     if not databases:
         st.sidebar.warning("No databases found. Please upload a file first.")
