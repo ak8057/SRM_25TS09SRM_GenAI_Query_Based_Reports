@@ -6,12 +6,14 @@
 
 ## What This Does?
 
-Ever wished you could just ask your spreadsheets questions and get smart answers back? That's exactly what this project does. Drop in an Excel, PDF, images or any other files, and suddenly you can have all data extracted and stored in the Sql database.
+Ever wished you could just ask your spreadsheets questions and get smart answers back? That's exactly what this project does. Drop in an Excel, PDF amd the data will be stored dynamically in the relevant table and column and Ask any query and right data for the answer will be retrieved from the DB . 
 
 ## How It Works
 
-**1. Data Ingestion** → Your Excel files get processed and stored in a proper SQL database  
+**1. Data Ingestion** → Your Excel files get processed and stored in a proper SQL database. 
+  So any Data in Pdf or Excel (csv , xlsxx etc) can be interpretted and stored in their relevant tables in that database matching the content and primary identifiers and then actual data can be stored based on similairty with the existing column of the table or new      column. 
 **2. AI Analysis** → Ask questions in plain English and get intelligent answers about your data
+  So any NLP query sent by the user , first relevant tables are found by the ChromaDB vectordb based similarity matching then inside the relevant tables the relevant columns for the query are checked , after which the sql query is formed to retireve the result data      which then can also be converted back to NLP 
 
 Think of it as giving your spreadsheets a brain.
 
