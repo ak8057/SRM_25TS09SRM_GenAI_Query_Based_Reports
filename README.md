@@ -100,7 +100,7 @@ QueryBasedReports/
 - MySQL
 - Gemini API Key
 
-### Docker Installation
+### Setting up the project
 
 1. **Clone the repository**
    ```bash
@@ -126,46 +126,29 @@ QueryBasedReports/
    GEMINI_API_KEY=your_key_here
    ```
 
-3. **Launch the application**
-   ```bash
-   docker-compose up --build
-   ```
-
-4. **Access the application**
-   - Frontend: `http://localhost:8501`
-   - Backend API: `http://localhost:8000`
-   - API Docs: `http://localhost:8000/docs`
-
-### Manual Installation
-
-<details>
-<summary>Click to expand manual installation steps</summary>
-
-1. **Install Python dependencies**
+3. **Install Python dependencies**
    ```bash
    pip install -r requirements.txt
    pip install -r backend/requirements.txt
    ```
 
-2. **Set up the database**
+4. **Set up the database**
    ```bash
    # Create database
    mysql -u root -p -e "CREATE DATABASE query_reports;"
    ```
 
-3. **Run the backend**
+5. **Run the backend**
    ```bash
    cd backend
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
 
-4. **Run the frontend**
+6. **Run the frontend**
    ```bash
    cd frontend
    streamlit run app.py
    ```
-
-</details>
 
 ---
 
