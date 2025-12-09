@@ -120,8 +120,7 @@ QueryBasedReports/
    DB_PORT=3306
    DB_NAME=query_reports
    DB_USER=root
-   DB_PASSWORD=your_password
-   DB_TYPE=mysql
+   DB_PASS=your_password
    
    # AI Configuration
    GEMINI_API_KEY=your_key_here
