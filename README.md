@@ -24,29 +24,67 @@ Think of it as giving your spreadsheets a brain.
 ## User Query Flow
 <img width="715" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/ef691bd8-ca86-44e7-ba7f-e80ebaa4c871">
 
-
-
 ## Project Structure
 
 ```
-DataRetrievalintoSQL/
+QueryBasedReports/
 │
-├── 📂 DATA/                     # Where your processed data lives
-│
-├── 📂 feature_ingestion/        # The data processing engine
+├── backend/
 │   ├── app/
-│   │   ├── venv/               # Python environment
-│   │   ├── ingest.py           # The main processor
-│   │   ├── requirements.txt    # What we need to run
-│   │   └── [your-files.xlsx]   # Drop your Excel files here
-│   ├── .env                    # Your database secrets
-│   └── docker-compose.yml      # One-click deployment
+│   │   ├── models/
+│   │   │   └── query.py                    # Data models
+│   │   ├── routes/
+│   │   │   ├── db_meta.py                  # Database metadata endpoints
+│   │   │   ├── debug_chroma.py             # ChromaDB debugging
+│   │   │   ├── execute_query.py            # Query execution
+│   │   │   ├── intelligent_ingest.py       # Smart data ingestion
+│   │   │   ├── nl2sql.py                   # Natural language to SQL
+│   │   │   ├── refresh_schema.py           # Schema refresh
+│   │   │   ├── summarize.py                # Result summarization
+│   │   │   └── upload_excel.py             # File upload handling
+│   │   ├── services/
+│   │   │   ├── intelligent_ingestion_service.py
+│   │   │   ├── nl2sql_service.py
+│   │   │   ├── summarize_service.py
+│   │   │   └── upload_service.py
+│   │   ├── utils/
+│   │   │   ├── chroma_utils.py             # Vector DB utilities
+│   │   │   ├── db_utils.py                 # Database utilities
+│   │   │   ├── db.py                       # Database connection
+│   │   │   ├── fewshot_utils.py            # Few-shot learning
+│   │   │   └── main.py                     # Utility main
+│   │   └── main.py                         # FastAPI application
+│   └── requirements.txt
 │
-├── 📂 queryGeneration/          # Where the AI magic happens
-│   └── query_based_genai.ipynb         # Your data conversation interface
+├── frontend/
+│   ├── components/
+│   │   ├── data_ingestion.py               # Data ingestion UI
+│   │   ├── file_upload.py                  # File upload component
+│   │   ├── followup.py                     # Follow-up queries
+│   │   ├── nl_query.py                     # Natural language query UI
+│   │   ├── result_viewer.py                # Results display
+│   │   ├── sidebar.py                      # Sidebar navigation
+│   │   └── sql_editor.py                   # SQL editor component
+│   │
+│   ├── utils/
+│   │   ├── api.py                          # API client
+│   │   └── app.py                          # App utilities
+│   │
+│   └── app.py                              # Main Streamlit app
 │
-└── README.md                   # You are here
+├── Testing Dataset/
+│   └── Main_Test_Dataset/
+│       ├── chrome/                         # Chrome test data
+│       ├── teams/                          # Teams test data
+│       └── whatsapp/                       # WhatsApp test data
+│
+├── docker-compose.yml                      # Docker orchestration
+├── .env.example                            # Environment variables template
+├── README.md                               # This file
+└── requirements.txt                        # Python dependencies
 ```
+
+---
 
 ## What's Under the Hood
 
