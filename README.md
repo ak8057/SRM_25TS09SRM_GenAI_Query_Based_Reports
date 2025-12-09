@@ -137,6 +137,14 @@ QueryBasedReports/
    # Create database
    mysql -u root -p -e "CREATE DATABASE query_reports;"
    ```
+5. **Set up Virtual Environment**
+   ```bash
+   python3.10 -m venv venv
+   # Activate the environment
+   # On Windows (PowerShell / CMD):
+   venv\Scripts\activate
+   # On macOS / Linux:
+   source venv/bin/activate
 
 5. **Run the backend**
    ```bash
