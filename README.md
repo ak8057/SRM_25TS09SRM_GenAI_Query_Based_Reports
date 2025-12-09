@@ -83,85 +83,86 @@ QueryBasedReports/
 ├── README.md                               # This file
 └── requirements.txt                        # Python dependencies
 ```
-
 ---
 
-## What's Under the Hood
+## 🛠️ Installation
 
-**Data Handling**
-- `pandas` for data wrangling
-- `openpyxl` for Excel file processing
-- `sqlalchemy` for database operations
+### Prerequisites
 
-**Database Support**
-- PostgreSQL with `psycopg2-binary`
-- MySQL with `pymysql`
+- Docker & Docker Compose
+- Python 3.10+
+- MySQL
+- Gemini API Key
 
-**Infrastructure**
-- Docker for easy deployment
-- Jupyter for interactive analysis
-- GEMINI AI for intelligent querying
+### Quick Start with Docker (Recommended)
 
-## Getting Started
-
-### What You Need
-- Docker (for easy setup)
-- A SQL database (PostgreSQL or MySQL or mongoDB based on the usage)
-- Python 3.x if you want to run things locally
-
-### Quick Setup
-
-**Step 1: Get the code**
-```bash
-git clone <your-repo-url>
-cd DataRetrievalintoSQL
-```
-
-**Step 2: Configure your database**
-```bash
-cd feature_ingestion
-# Edit the .env file with your database details
-```
-
-**Step 3: Fire it up**
-```bash
-docker-compose up
-```
-
-That's it. You're ready to process data.
-
-## Using the System
-
-### Processing Your First File
-
-1. **Drop your Excel file** into `/feature_ingestion/app/`
-2. **Make sure** your database connection is working
-3. **Run the processor**:
+1. **Clone the repository**
    ```bash
-   cd feature_ingestion/app
-   python ingest.py
+   git clone https://github.com/<your-username>/QueryBasedReports.git
+   cd QueryBasedReports
    ```
 
-Watch as your Excel data gets transformed into a queryable database table.
-
-### Asking Questions About Your Data
-
-1. **Open the AI interface**:
+2. **Configure environment variables**
    ```bash
-   cd queryGeneration
-   jupyter notebook sql_query.ipynb
+   cp .env.example .env
+   ```
+   
+   Edit `.env` with your configuration:
+   ```env
+   # Database Configuration
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_NAME=query_reports
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_TYPE=mysql
+   
+   # AI Configuration
+   GEMINI_API_KEY=your_key_here
    ```
 
-2. **Connect to your data**:
-   - Point it to your database
-   - Tell it which table to analyze
+3. **Launch the application**
+   ```bash
+   docker-compose up --build
+   ```
 
-3. **Start asking questions**:
-   - "What are the top 5 categories by sales?"
-   - "Show me trends from the last quarter"
-   - "Which products are underperforming?"
+4. **Access the application**
+   - Frontend: `http://localhost:8501`
+   - Backend API: `http://localhost:8000`
+   - API Docs: `http://localhost:8000/docs`
 
-The model will analyze your data and give you intelligent, contextual answers.
+### Manual Installation
+
+<details>
+<summary>Click to expand manual installation steps</summary>
+
+1. **Install Python dependencies**
+   ```bash
+   pip install -r requirements.txt
+   pip install -r backend/requirements.txt
+   ```
+
+2. **Set up the database**
+   ```bash
+   # Create database
+   mysql -u root -p -e "CREATE DATABASE query_reports;"
+   ```
+
+3. **Run the backend**
+   ```bash
+   cd backend
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+4. **Run the frontend**
+   ```bash
+   cd frontend
+   streamlit run app.py
+   ```
+
+</details>
+
+---
 
 ## What Makes This Special
 
