@@ -1,335 +1,195 @@
-# 🚀 Query Based Reports
+# Query Based Reports
 
-
-## 📖 Overview
-
-Query Based Reports is an intelligent data query system that converts spreadsheets and documents into a fully queryable SQL database. Users can ask questions in plain English—no SQL or technical expertise required.
-
-The system intelligently ingests data, understands schema context, generates accurate SQL using AI, and returns clean, human-readable responses.
-
-### 🎯 Problem Statement
-
-Traditional database querying requires SQL expertise and deep understanding of complex schemas, creating barriers for non-technical users. Existing natural language querying systems often:
-
-- ❌ Generate incorrect or unsafe SQL
-- ❌ Fail to understand business context
-- ❌ Produce raw, difficult-to-interpret outputs
-
-**Query Based Reports** solves this by providing validated SQL generation, safe execution, and natural language summaries—democratizing data access and improving decision-making.
+*Transform your Excel data into intelligent, queryable insights*
 
 ---
 
-## ✨ Key Features
+## What This Does?
 
-### 🔄 Automated Data Ingestion
-- 📁 Support for Excel, CSV, PDF, PPT, Images, and text files
-- 🧹 Automatic data extraction and cleaning
-- 🗄️ Dynamic SQL table creation
-- 🔄 Automatic schema change detection and updates
+Ever wished you could just ask your spreadsheets questions and get smart answers back? That's exactly what this project does. Drop in an Excel, PDF amd the data will be stored dynamically in the relevant table and column and Ask any query and right data for the answer will be retrieved from the DB . 
 
-### 🤖 AI-Powered Natural Language Querying
-- 💬 Ask questions like *"Show sales for last quarter"*
-- 🧠 AI-generated optimized SQL queries
-- 🛡️ SQL Guard for safety and validation
+## How It Works
 
-### 🧠 Schema Intelligence
-- 📊 Schema extraction using SQLAlchemy
-- 🎯 Huggingface Embedding model for semantic understanding
-- 💾 ChromaDB for intelligent table matching
+**1. Data Ingestion** → Your Excel files get processed and stored in a proper SQL database. 
+  So any Data in Pdf or Excel (csv , xlsxx etc) can be interpretted and stored in their relevant tables in that database matching the content and primary identifiers and then actual data can be stored based on similairty with the existing column of the table or new      column. 
+  
+**2. AI Analysis** → Ask questions in plain English and get intelligent answers about your data
+  So any NLP query sent by the user , first relevant tables are found by the ChromaDB vectordb based similarity matching then inside the relevant tables the relevant columns for the query are checked , after which the sql query is formed to retireve the result data      which then can also be converted back to NLP 
 
-### 🧩 RAG-Based Prompt Optimization
-- 🔗 Combines schema + examples + user query
-- ✅ Ensures highly accurate SQL generation
+Think of it as giving your spreadsheets a brain.
 
-### 📊 Rich Interactive Frontend
-- 📤 File upload console
-- 💬 Natural language query box
-- 📈 Result viewer with tables & charts
-- 🛠️ SQL editor for advanced debugging
+## Project Workflow
+<img width="1393" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/05c1005e-b915-4501-8275-b33b5f08e141">
 
-### 🐳 One-Click Deployment
-- 📦 Fully containerized with Docker
-- ⚡ Zero manual setup required
+## User Query Flow
+<img width="715" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/ef691bd8-ca86-44e7-ba7f-e80ebaa4c871">
 
----
 
-## 🏗️ System Architecture
+
+## Project Structure
 
 ```
-┌─────────┐     ┌──────────┐     ┌─────────────┐     ┌──────────┐
-│  User   │────▶│ Frontend │────▶│   FastAPI   │────▶│  Schema  │
-│   UI    │     │    UI    │     │   Backend   │     │ Intelligence│
-└─────────┘     └──────────┘     └─────────────┘     └──────────┘
-                                         │                    │
-                                         ▼                    ▼
-                                  ┌─────────────┐     ┌──────────┐
-                                  │  RAG + LLM  │────▶│   SQL    │
-                                  │  Generator  │     │Validation│
-                                  └─────────────┘     └──────────┘
-                                         │                    │
-                                         ▼                    ▼
-                                  ┌─────────────┐     ┌──────────┐
-                                  │  Database   │────▶│  Result  │
-                                  │  Executor   │     │  Viewer  │
-                                  └─────────────┘     └──────────┘
-```
-
----
-
-## 📁 Project Structure
-
-```
-QueryBasedReports/
+DataRetrievalintoSQL/
 │
-├── backend/
+├── 📂 DATA/                     # Where your processed data lives
+│
+├── 📂 feature_ingestion/        # The data processing engine
 │   ├── app/
-│   │   ├── models/
-│   │   │   └── query.py                    # Data models
-│   │   ├── routes/
-│   │   │   ├── db_meta.py                  # Database metadata endpoints
-│   │   │   ├── debug_chroma.py             # ChromaDB debugging
-│   │   │   ├── execute_query.py            # Query execution
-│   │   │   ├── intelligent_ingest.py       # Smart data ingestion
-│   │   │   ├── nl2sql.py                   # Natural language to SQL
-│   │   │   ├── refresh_schema.py           # Schema refresh
-│   │   │   ├── summarize.py                # Result summarization
-│   │   │   └── upload_excel.py             # File upload handling
-│   │   ├── services/
-│   │   │   ├── intelligent_ingestion_service.py
-│   │   │   ├── nl2sql_service.py
-│   │   │   ├── summarize_service.py
-│   │   │   └── upload_service.py
-│   │   ├── utils/
-│   │   │   ├── chroma_utils.py             # Vector DB utilities
-│   │   │   ├── db_utils.py                 # Database utilities
-│   │   │   ├── db.py                       # Database connection
-│   │   │   ├── fewshot_utils.py            # Few-shot learning
-│   │   │   └── main.py                     # Utility main
-│   │   └── main.py                         # FastAPI application
-│   └── requirements.txt
+│   │   ├── venv/               # Python environment
+│   │   ├── ingest.py           # The main processor
+│   │   ├── requirements.txt    # What we need to run
+│   │   └── [your-files.xlsx]   # Drop your Excel files here
+│   ├── .env                    # Your database secrets
+│   └── docker-compose.yml      # One-click deployment
 │
-├── frontend/
-│   ├── components/
-│   │   ├── data_ingestion.py               # Data ingestion UI
-│   │   ├── file_upload.py                  # File upload component
-│   │   ├── followup.py                     # Follow-up queries
-│   │   ├── nl_query.py                     # Natural language query UI
-│   │   ├── result_viewer.py                # Results display
-│   │   ├── sidebar.py                      # Sidebar navigation
-│   │   └── sql_editor.py                   # SQL editor component
-│   │
-│   ├── utils/
-│   │   ├── api.py                          # API client
-│   │   └── app.py                          # App utilities
-│   │
-│   └── app.py                              # Main Streamlit app
+├── 📂 queryGeneration/          # Where the AI magic happens
+│   └── query_based_genai.ipynb         # Your data conversation interface
 │
-├── Testing Dataset/
-│   └── Main_Test_Dataset/
-│       ├── chrome/                         # Chrome test data
-│       ├── teams/                          # Teams test data
-│       └── whatsapp/                       # WhatsApp test data
-│
-├── docker-compose.yml                      # Docker orchestration
-├── .env.example                            # Environment variables template
-├── README.md                               # This file
-└── requirements.txt                        # Python dependencies
+└── README.md                   # You are here
 ```
 
----
+## What's Under the Hood
 
-## 🛠️ Installation
+**Data Handling**
+- `pandas` for data wrangling
+- `openpyxl` for Excel file processing
+- `sqlalchemy` for database operations
 
-### Prerequisites
+**Database Support**
+- PostgreSQL with `psycopg2-binary`
+- MySQL with `pymysql`
 
-- Docker & Docker Compose
-- Python 3.10+
-- MySQL 
-- Gemini API Key
+**Infrastructure**
+- Docker for easy deployment
+- Jupyter for interactive analysis
+- GEMINI AI for intelligent querying
 
-### Quick Start with Docker (Recommended)
+## Getting Started
 
-1. **Clone the repository**
-   ```bash[
-   https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports
-   cd QueryBasedReports
-   ```
+### What You Need
+- Docker (for easy setup)
+- A SQL database (PostgreSQL or MySQL or mongoDB based on the usage)
+- Python 3.x if you want to run things locally
 
-2. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` with your configuration:
-   ```env
-   # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_NAME=query_reports
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_TYPE=mysql
-   
-   # AI Configuration
-   GEMINI_API_KEY=your_key_here
-   ```
+### Quick Setup
 
-3. **Launch the application**
-   ```bash
-   docker-compose up --build
-   ```
-
-4. **Access the application**
-   - Frontend: `streamlit run frontend/app.py`
-   - Backend API: `uvicorn main:app --reload`
-
-### Manual Installation
-
-<details>
-<summary>Click to expand manual installation steps</summary>
-
-1. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   pip install -r backend/requirements.txt
-   ```
-
-2. **Set up the database**
-   ```bash
-   # Create database
-   mysql -u root -p -e "CREATE DATABASE query_reports;"
-   ```
-
-3. **Run the backend**
-   ```bash
-   cd backend
-   uvicorn main:app --reload
-   ```
-
-4. **Run the frontend**
-   ```bash
-   streamlit run frontend/app.py
-   ```
-
-</details>
-
----
-
-## 🎯 Usage
-
-### 1. Upload Data Files
-
-Navigate to the frontend UI and upload your data files:
-
-- **Supported formats:** Excel (.xlsx, .xls), CSV, PDF, PPT, Images, Text files
-- Files are automatically processed and stored in SQL tables
-- Schema is extracted and indexed for intelligent querying
-
-### 2. Query Your Data in Natural Language
-
-Simply type questions in plain English:
-
-```
-"Show me sales for Q3"
-"List all employees who joined after 2021"
-"Top 10 products by revenue last month"
-"Find orders where amount > 5000 and status = pending"
-"What is the average salary by department?"
+**Step 1: Get the code**
+```bash
+git clone <your-repo-url>
+cd DataRetrievalintoSQL
 ```
 
-### 3. View Results
+**Step 2: Configure your database**
+```bash
+cd feature_ingestion
+# Edit the .env file with your database details
+```
 
-- **📊 Tables:** Clean, formatted data tables
-- **📈 Charts:** Visual representations of data
-- **📝 Summaries:** AI-generated insights
-- **🛠️ SQL Editor:** View and edit generated SQL (advanced users)
+**Step 3: Fire it up**
+```bash
+docker-compose up
+```
+
+That's it. You're ready to process data.
+
+## Using the System
+
+### Processing Your First File
+
+1. **Drop your Excel file** into `/feature_ingestion/app/`
+2. **Make sure** your database connection is working
+3. **Run the processor**:
+   ```bash
+   cd feature_ingestion/app
+   python ingest.py
+   ```
+
+Watch as your Excel data gets transformed into a queryable database table.
+
+### Asking Questions About Your Data
+
+1. **Open the AI interface**:
+   ```bash
+   cd queryGeneration
+   jupyter notebook sql_query.ipynb
+   ```
+
+2. **Connect to your data**:
+   - Point it to your database
+   - Tell it which table to analyze
+
+3. **Start asking questions**:
+   - "What are the top 5 categories by sales?"
+   - "Show me trends from the last quarter"
+   - "Which products are underperforming?"
+
+The model will analyze your data and give you intelligent, contextual answers.
+
+## What Makes This Special
+
+**Smart Processing** → Handles messy Excel files and creates clean database structures
+
+**Natural Language Queries** → No need to write SQL. Just ask questions like you're talking to a colleague
+
+**Flexible Database Support** → Works with PostgreSQL, MySQL, and can be extended to others
+
+**Containerized Deployment** → Docker makes setup painless across different environments
+
+**Interactive Analysis** → Jupyter notebooks provide a familiar interface for data exploration
+
+## Real-World Example
+
+Let's say you have a sales report in Excel:
+
+1. **Before**: Manually sorting through rows, creating pivot tables, struggling with complex formulas
+2. **After**: "Hey, what were our best-selling products last month?" → Get instant insights with charts and explanations
+
+## What Makes This Special
+
+**Smart Processing** → Handles messy Excel files and creates clean database structures
+
+**Natural Language Queries** → No need to write SQL. Just ask questions like you're talking to a colleague
+
+**Flexible Database Support** → Works with PostgreSQL, MySQL, and can be extended to others
+
+**Containerized Deployment** → Docker makes setup painless across different environments
+
+**Interactive Analysis** → Jupyter notebooks provide a familiar interface for data exploration
+
+## Real-World Example
+
+Let's say you have a sales report in Excel:
+
+1. **Before**: Manually sorting through rows, creating pivot tables, struggling with complex formulas
+2. **After**: "Hey, what were our best-selling products last month?" → Get instant insights with charts and explanations
+
+## Contributing
+
+Found a bug? Have an idea? Contributions are welcome. This project grows better with community input.
+
+## Database Configuration
+
+Your `.env` file should look something like this:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=your_database
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_TYPE=postgresql  # or mysql
+```
+
+## Troubleshooting
+
+**Can't connect to database?** → Check your `.env` file and ensure your database is running
+
+**Excel file not processing?** → Make sure the file isn't password-protected and has clear headers
+
+**AI giving weird answers?** → Verify your table name is correct in the notebook configuration
 
 ---
 
-## 🧰 Technologies Used
-
-### Backend
-- **FastAPI** - Modern, high-performance web framework
-- **SQLAlchemy** - SQL toolkit and ORM
-- **MySQL / PostgreSQL** - Relational database
-- **ChromaDB** - Vector database for embeddings
-- **Jina Embeddings** - Semantic search and matching
-- **Gemini LLM** - Natural language understanding
-
-### Frontend
-- **Streamlit** - Interactive Python web interface
-- **REST API Integration** - Seamless backend communication
-
-### Infrastructure
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-
----
-
-## 📚 Documentation
-
-### API Endpoints
-
-<details>
-<summary>View available endpoints</summary>
-
-#### Data Ingestion
-- `POST /upload/excel` - Upload and process Excel/CSV files
-- `POST /ingest/intelligent` - Intelligent data ingestion
-
-#### Querying
-- `POST /nl2sql` - Convert natural language to SQL
-- `POST /execute` - Execute SQL query
-- `POST /summarize` - Generate result summary
-
-#### Schema Management
-- `GET /db/meta` - Get database metadata
-- `POST /refresh/schema` - Refresh schema embeddings
-
-#### Debugging
-- `GET /debug/chroma` - Debug ChromaDB collections
-
-</details>
-
-### Configuration Options
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DB_HOST` | Database host | localhost |
-| `DB_PORT` | Database port | 3306 |
-| `DB_NAME` | Database name | query_reports |
-| `DB_TYPE` | Database type (mysql/postgresql) | mysql |
-| `GEMINI_API_KEY` | Google Gemini API key | - |
-
----
-
-## 🐛 Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Database not connecting | Verify `.env` configuration and ensure database is running |
-| Embeddings not loading | Install required model dependencies: `pip install sentence-transformers` |
-| Incorrect AI responses | Refresh schema and clear few-shot cache |
-| File ingestion errors | Ensure files have proper headers and are not password-protected |
-| Docker issues | Run `docker-compose down -v` then restart with `docker-compose up --build` |
-
----
+*Built for intelligent data analysis and insights.*
 
 
-## 🙏 Acknowledgments
-
-- Google Gemini for powerful LLM capabilities
-- ChromaDB for efficient vector storage
-- Huggingface Embedding modal for semantic embeddings
-- FastAPI and Streamlit communities
-
----
-
-
-<div align="center">
-
-**⭐ Star this repository if you find it helpful!**
-
-Made with ❤️ by the Query Based Reports Team
-
-</div>
