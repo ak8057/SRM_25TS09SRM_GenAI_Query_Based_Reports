@@ -3,6 +3,12 @@
 *Transform your Excel data into intelligent, queryable insights*
 
 ---
+## Complete Project Demo and Explanation
+![mqdefault](https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38880/4db00dd3-6754-4ba0-99c6-798ecf3d0e3a)
+
+https://youtu.be/5Ied6-Ck5FE
+
+---
 
 ## What This Does?
 
