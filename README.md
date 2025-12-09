@@ -18,6 +18,10 @@ Think of it as giving your spreadsheets a brain.
 ## Project Workflow
 <img width="1393" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/05c1005e-b915-4501-8275-b33b5f08e141">
 
+## User Query Flow
+<img width="715" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/ef691bd8-ca86-44e7-ba7f-e80ebaa4c871">
+
+
 
 ## Project Structure
 
