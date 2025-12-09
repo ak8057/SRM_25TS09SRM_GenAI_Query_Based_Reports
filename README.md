@@ -8,6 +8,8 @@
 
 Ever wished you could just ask your spreadsheets questions and get smart answers back? That's exactly what this project does. Drop in an Excel, PDF amd the data will be stored dynamically in the relevant table and column and Ask any query and right data for the answer will be retrieved from the DB . 
 
+---
+
 ## How It Works
 
 **1. Data Ingestion** → Your Excel files get processed and stored in a proper SQL database. 
@@ -18,11 +20,15 @@ Ever wished you could just ask your spreadsheets questions and get smart answers
 
 Think of it as giving your spreadsheets a brain.
 
+---
+
 ## Project Workflow
 <img width="1393" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/05c1005e-b915-4501-8275-b33b5f08e141">
 
 ## User Query Flow
 <img width="715" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/ef691bd8-ca86-44e7-ba7f-e80ebaa4c871">
+
+---
 
 ## Project Structure
 
@@ -85,7 +91,7 @@ QueryBasedReports/
 ```
 ---
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 
@@ -164,70 +170,93 @@ QueryBasedReports/
 
 ---
 
-## What Makes This Special
+## Usage
 
-**Smart Processing** → Handles messy Excel files and creates clean database structures
+### 1. Upload Data Files
 
-**Natural Language Queries** → No need to write SQL. Just ask questions like you're talking to a colleague
+Navigate to the frontend UI and upload your data files:
 
-**Flexible Database Support** → Works with PostgreSQL, MySQL, and can be extended to others
+- **Supported formats:** Excel (.xlsx, .xls), CSV, PDF, PPT, Images, Text files
+- Files are automatically processed and stored in SQL tables
+- Schema is extracted and indexed for intelligent querying
 
-**Containerized Deployment** → Docker makes setup painless across different environments
+### 2. Query Your Data in Natural Language
 
-**Interactive Analysis** → Jupyter notebooks provide a familiar interface for data exploration
+Simply type questions in plain English:
 
-## Real-World Example
-
-Let's say you have a sales report in Excel:
-
-1. **Before**: Manually sorting through rows, creating pivot tables, struggling with complex formulas
-2. **After**: "Hey, what were our best-selling products last month?" → Get instant insights with charts and explanations
-
-## What Makes This Special
-
-**Smart Processing** → Handles messy Excel files and creates clean database structures
-
-**Natural Language Queries** → No need to write SQL. Just ask questions like you're talking to a colleague
-
-**Flexible Database Support** → Works with PostgreSQL, MySQL, and can be extended to others
-
-**Containerized Deployment** → Docker makes setup painless across different environments
-
-**Interactive Analysis** → Jupyter notebooks provide a familiar interface for data exploration
-
-## Real-World Example
-
-Let's say you have a sales report in Excel:
-
-1. **Before**: Manually sorting through rows, creating pivot tables, struggling with complex formulas
-2. **After**: "Hey, what were our best-selling products last month?" → Get instant insights with charts and explanations
-
-## Contributing
-
-Found a bug? Have an idea? Contributions are welcome. This project grows better with community input.
-
-## Database Configuration
-
-Your `.env` file should look something like this:
-
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=your_database
-DB_USER=your_username
-DB_PASSWORD=your_password
-DB_TYPE=postgresql  # or mysql
+```
+"Show me sales for Q3"
+"List all employees who joined after 2021"
+"Top 10 products by revenue last month"
+"Find orders where amount > 5000 and status = pending"
+"What is the average salary by department?"
 ```
 
-## Troubleshooting
+### 3. View Results
 
-**Can't connect to database?** → Check your `.env` file and ensure your database is running
-
-**Excel file not processing?** → Make sure the file isn't password-protected and has clear headers
-
-**AI giving weird answers?** → Verify your table name is correct in the notebook configuration
+- **Tables:** Clean, formatted data tables
+- **Charts:** Visual representations of data
+- **Summaries:** AI-generated insights
+- **SQL Editor:** View and edit generated SQL (advanced users)
 
 ---
+
+## Technologies Used
+
+### Backend
+- **FastAPI** - Modern, high-performance web framework
+- **SQLAlchemy** - SQL toolkit and ORM
+- **MySQL / PostgreSQL** - Relational database
+- **ChromaDB** - Vector database for embeddings
+- **HuggingFace Embedding Model** - Semantic search and matching
+- **Gemini LLM** - Natural language understanding
+
+### Frontend
+- **Streamlit** - Interactive Python web interface
+- **REST API Integration** - Seamless backend communication
+
+### Infrastructure
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+
+---
+
+## Documentation
+
+### API Endpoints
+
+<details>
+<summary>View available endpoints</summary>
+
+#### Data Ingestion
+- `POST /upload/excel` - Upload and process Excel/CSV files
+- `POST /ingest/intelligent` - Intelligent data ingestion
+
+#### Querying
+- `POST /nl2sql` - Convert natural language to SQL
+- `POST /execute` - Execute SQL query
+- `POST /summarize` - Generate result summary
+
+#### Schema Management
+- `GET /db/meta` - Get database metadata
+- `POST /refresh/schema` - Refresh schema embeddings
+
+#### Debugging
+- `GET /debug/chroma` - Debug ChromaDB collections
+
+</details>
+
+---
+
+##  Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Database not connecting | Verify `.env` configuration and ensure database is running |
+| Embeddings not loading | Install required model dependencies: `pip install sentence-transformers` |
+| Incorrect AI responses | Refresh schema and clear few-shot cache |
+| File ingestion errors | Ensure files have proper headers and are not password-protected |
+| Docker issues | Run `docker-compose down -v` then restart with `docker-compose up --build` |
 
 *Built for intelligent data analysis and insights.*
 
