@@ -15,6 +15,10 @@ Ever wished you could just ask your spreadsheets questions and get smart answers
 
 Think of it as giving your spreadsheets a brain.
 
+## Project Workflow
+<img width="1303" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/3bc6650c-07f2-420c-abd2-b42379cd6f7a">
+
+
 ## Project Structure
 
 ```
