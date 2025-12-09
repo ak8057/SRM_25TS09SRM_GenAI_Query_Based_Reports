@@ -100,7 +100,7 @@ QueryBasedReports/
 - MySQL
 - Gemini API Key
 
-### Quick Start with Docker (Recommended)
+### Docker Installation
 
 1. **Clone the repository**
    ```bash
@@ -136,7 +136,7 @@ QueryBasedReports/
    - Backend API: `http://localhost:8000`
    - API Docs: `http://localhost:8000/docs`
 
-### Manual Installation ( Second Option )
+### Manual Installation
 
 <details>
 <summary>Click to expand manual installation steps</summary>
