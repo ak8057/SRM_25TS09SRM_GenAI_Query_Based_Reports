@@ -104,7 +104,7 @@ QueryBasedReports/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/<your-username>/QueryBasedReports.git
+   git clone https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports.git
    cd QueryBasedReports
    ```
 
