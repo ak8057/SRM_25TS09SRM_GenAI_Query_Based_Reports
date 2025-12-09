@@ -131,7 +131,7 @@ QueryBasedReports/
    - Backend API: `http://localhost:8000`
    - API Docs: `http://localhost:8000/docs`
 
-### Manual Installation
+### Manual Installation ( Second Option )
 
 <details>
 <summary>Click to expand manual installation steps</summary>
