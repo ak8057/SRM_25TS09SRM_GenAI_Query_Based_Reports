@@ -34,7 +34,7 @@ Traditional database querying requires SQL expertise and deep understanding of c
 
 ### 🧠 Schema Intelligence
 - 📊 Schema extraction using SQLAlchemy
-- 🎯 Jina embedding model for semantic understanding
+- 🎯 Huggingface Embedding model for semantic understanding
 - 💾 ChromaDB for intelligent table matching
 
 ### 🧩 RAG-Based Prompt Optimization
@@ -320,7 +320,7 @@ Simply type questions in plain English:
 
 - Google Gemini for powerful LLM capabilities
 - ChromaDB for efficient vector storage
-- Huggingface Embeddings for semantic embeddings
+- Huggingface Embedding modal for semantic embeddings
 - FastAPI and Streamlit communities
 
 ---
