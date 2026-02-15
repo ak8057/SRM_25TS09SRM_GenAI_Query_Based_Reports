@@ -1,22 +1,25 @@
-version: '3.9'
+version: "3.9"
+
 services:
-  db:
-    image: mysql:latest
-    container_name: mysql-db
-    
-    env_file:
-      - ./.env 
-      
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASS}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      
+
+  backend:
+    image: abhaykumar8057/nl2sql-backend
+    container_name: fastapi_backend
     ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./mysql-config:/etc/mysql/conf.d
-volumes:
-  db_data:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: always
+
+  frontend:
+    image: abhaykumar8057/nl2sql-frontend
+    container_name: streamlit_frontend
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: always
