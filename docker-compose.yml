@@ -3,7 +3,7 @@ version: "3.9"
 services:
 
   backend:
-    image: abhaykumar8057/nl2sql-backend
+    image: abhay2kumar/nl2sql-backend
     container_name: fastapi_backend
     ports:
       - "8000:8000"
@@ -12,7 +12,7 @@ services:
     restart: always
 
   frontend:
-    image: abhaykumar8057/nl2sql-frontend
+    image: abhay2kumar/nl2sql-frontend
     container_name: streamlit_frontend
     ports:
       - "8501:8501"
