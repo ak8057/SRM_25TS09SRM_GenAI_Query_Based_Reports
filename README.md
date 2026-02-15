@@ -106,6 +106,127 @@ QueryBasedReports/
 - MySQL
 - Gemini API Key
 
+# Docker Setup and Usage Guide
+---
+
+# Running the Project (For Users)
+
+* docker-compose.yml
+* .env file
+
+---
+
+# Step 1 — Create Project Folder
+
+```
+mkdir nl2sql
+cd nl2sql
+```
+
+---
+
+# Step 2 — Create `.env` File
+
+Create `.env` file:
+
+```
+
+DB_USER = ""
+DB_PASS = ""  
+DB_HOST = "host.docker.internal"
+DB_PORT = ""
+DB_NAME = ""
+
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+---
+
+# Step 3 — Create docker-compose.yml
+
+```
+version: "3.9"
+
+services:
+
+  backend:
+    image: abhay2kumar/nl2sql-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: always
+
+  frontend:
+    image: abhay2kumar/nl2sql-frontend
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: always
+```
+
+---
+
+# Step 4 — Start Application
+
+```
+docker-compose up
+```
+
+Docker will automatically download the images from Docker Hub.
+
+---
+
+# Step 5 — Access Application
+
+Frontend:
+
+```
+http://localhost:8501
+```
+
+Backend:
+
+```
+http://localhost:8000
+```
+
+Health Check:
+
+```
+http://localhost:8000/
+```
+
+---
+
+# Step 6 — Stop Application
+
+```
+docker-compose down
+```
+
+---
+
+# Part 3 — Alternative: Run Without docker-compose
+
+Backend:
+
+```
+docker run -d -p 8000:8000 --env-file .env abhay2kumar/nl2sql-backend
+```
+
+Frontend:
+
+```
+docker run -d -p 8501:8501 --env-file .env -e BACKEND_URL=http://host.docker.internal:8000 abhay2kumar/nl2sql-frontend
+```
+---
+
 ### Setting up the project
 
 1. **Clone the repository**
