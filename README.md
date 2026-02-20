@@ -1,4 +1,4 @@
-# Query Based Reports
+# Query Based Report
 
 *Transform your Excel data into intelligent, queryable insights*
 
