@@ -8,7 +8,10 @@
 
 https://youtu.be/5Ied6-Ck5FE
 
-Acces to .tar files : https://drive.google.com/file/d/196i9_35FM_3DCs79Owkb4tb4T69dQ2Jq/view?usp=sharing
+Access to .tar files : https://drive.google.com/file/d/1MHhmeR5JtGZzQrHKU5jnFkd43a_EIXAQ/view?usp=sharing
+
+Technical setup document link : https://drive.google.com/file/d/101YWyKTGp1RJCcqk1uew6-lLHLHbXtcm/view?usp=sharing
+
 ---
 
 ## What This Does?
@@ -42,59 +45,90 @@ Think of it as giving your spreadsheets a brain.
 ```
 QueryBasedReports/
 │
-├── backend/
-│   ├── app/
-│   │   ├── models/
-│   │   │   └── query.py                    # Data models
-│   │   ├── routes/
-│   │   │   ├── db_meta.py                  # Database metadata endpoints
-│   │   │   ├── debug_chroma.py             # ChromaDB debugging
-│   │   │   ├── execute_query.py            # Query execution
-│   │   │   ├── intelligent_ingest.py       # Smart data ingestion
-│   │   │   ├── nl2sql.py                   # Natural language to SQL
-│   │   │   ├── refresh_schema.py           # Schema refresh
-│   │   │   ├── summarize.py                # Result summarization
-│   │   │   └── upload_excel.py             # File upload handling
-│   │   ├── services/
-│   │   │   ├── intelligent_ingestion_service.py
-│   │   │   ├── nl2sql_service.py
-│   │   │   ├── summarize_service.py
-│   │   │   └── upload_service.py
-│   │   ├── utils/
-│   │   │   ├── chroma_utils.py             # Vector DB utilities
-│   │   │   ├── db_utils.py                 # Database utilities
-│   │   │   ├── db.py                       # Database connection
-│   │   │   ├── fewshot_utils.py            # Few-shot learning
-│   │   │   └── main.py                     # Utility main
-│   │   └── main.py                         # FastAPI application
-│   └── requirements.txt
-│
-├── frontend/
-│   ├── components/
-│   │   ├── data_ingestion.py               # Data ingestion UI
-│   │   ├── file_upload.py                  # File upload component
-│   │   ├── followup.py                     # Follow-up queries
-│   │   ├── nl_query.py                     # Natural language query UI
-│   │   ├── result_viewer.py                # Results display
-│   │   ├── sidebar.py                      # Sidebar navigation
-│   │   └── sql_editor.py                   # SQL editor component
-│   │
-│   ├── utils/
-│   │   ├── api.py                          # API client
-│   │   └── app.py                          # App utilities
-│   │
-│   └── app.py                              # Main Streamlit app
-│
-├── Testing Dataset/
-│   └── Main_Test_Dataset/
-│       ├── chrome/                         # Chrome test data
-│       ├── teams/                          # Teams test data
-│       └── whatsapp/                       # WhatsApp test data
-│
-├── docker-compose.yml                      # Docker orchestration
-├── .env.example                            # Environment variables template
-├── README.md                               # This file
-└── requirements.txt                        # Python dependencies
+|-- .env
+|-- .gitignore
+|-- Meeting_ppts.zip
+|-- README.md
+|-- Testing Dataset
+|   |-- Main_Test_Dataset
+|   |   |-- chrome
+|   |   |   |-- Chrome_Dataset.csv
+|   |   |   |-- File1_2008_2011.csv
+|   |   |   |-- File1_2008_2011.pdf
+|   |   |   |-- File2_2012_2015.csv
+|   |   |   |-- File2_2012_2015.pdf
+|   |   |   |-- File3_2016_2019.csv
+|   |   |   |-- File3_2016_2019.pdf
+|   |   |   |-- File4_2020_2023.csv
+|   |   |   |-- File4_2020_2023.pdf
+|   |   |   |-- chrome_dataset_v2.pdf
+|   |   |-- teams
+|   |   |   |-- Book1.xlsx
+|   |   |   |-- Book2.xlsx
+|   |   |   |-- Book3.xlsx
+|   |   |   |-- Book4.xlsx
+|   |   |   |-- File1.pdf
+|   |   |   |-- File2.pdf
+|   |   |   |-- File3.pdf
+|   |   |   |-- File4.pdf
+|   |   |   |-- Teams_Dataset.csv
+|   |   |   |-- teams_dataset_v2.pdf
+|   |   |-- whatsapp
+|   |   |   |-- Book1.xlsx
+|   |   |   |-- Book2.xlsx
+|   |   |   |-- Book3.xlsx
+|   |   |   |-- Book4.xlsx
+|   |   |   |-- File1_2009_2012.pdf
+|   |   |   |-- File2_2013_2016.pdf
+|   |   |   |-- File3_2017_2020.pdf
+|   |   |   |-- File4_2021_2024.pdf
+|   |   |   |-- Whatsapp_Dataset.csv
+|-- backend
+|   |-- app
+|   |   |-- models
+|   |   |   |-- query.py
+|   |   |-- routes
+|   |   |   |-- db_meta.py
+|   |   |   |-- debug_chroma.py
+|   |   |   |-- execute_query.py
+|   |   |   |-- intelligent_ingest.py
+|   |   |   |-- nl2sql.py
+|   |   |   |-- refresh_schema.py
+|   |   |   |-- summarize.py
+|   |   |   |-- upload_excel.py
+|   |   |-- services
+|   |   |   |-- intelligent_ingestion_service.py
+|   |   |   |-- nl2sql_service.py
+|   |   |   |-- summarize_service.py
+|   |   |   |-- upload_service.py
+|   |-- chroma_examples
+|   |   |-- fewshot_examples
+|   |-- chroma_schemas
+|   |-- main.py
+|   |-- utils
+|   |   |-- chroma_utils.py
+|   |   |-- db.py
+|   |   |-- db_utils.py
+|   |   |-- fewshot_utils.py
+|   |   |-- sql_readonly_validator.py
+|-- docker-compose.yml
+|-- frontend
+|   |-- app.py
+|   |-- assets
+|   |   |-- styles.css
+|   |-- components
+|   |   |-- data_ingestion.py
+|   |   |-- file_upload.py
+|   |   |-- followup.py
+|   |   |-- nl_query.py
+|   |   |-- result_viewer.py
+|   |   |-- sidebar.py
+|   |   |-- sql_editor.py
+|   |   |-- voice_input_component
+|   |-- utils
+|   |   |-- api.py
+|-- requirements.txt
+
 ```
 ---
 
