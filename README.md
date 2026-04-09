@@ -8,6 +8,7 @@
 
 https://youtu.be/5Ied6-Ck5FE
 
+Acces to .tar files : https://drive.google.com/file/d/196i9_35FM_3DCs79Owkb4tb4T69dQ2Jq/view?usp=sharing
 ---
 
 ## What This Does?
@@ -97,68 +98,124 @@ QueryBasedReports/
 ```
 ---
 
-## Installation
+# 📦 SETUP GUIDE
 
-### Prerequisites
+## GenAI | Query-Based Reports
 
-- Docker & Docker Compose
-- Python 3.10+
-- MySQL
-- Gemini API Key
+This document provides **complete setup instructions** for running the system using three different methods:
 
-# Docker Setup and Usage Guide
----
-
-# Running the Project (For Users)
-
-* docker-compose.yml
-* .env file
+1. 🌐 Docker Hub (Recommended)
+2. 📦 Offline `.tar` Deployment
+3. 🔧 Local Development Setup
 
 ---
 
-# Step 1 — Create Project Folder
+# 🔷 Prerequisites
 
+Ensure the following are installed:
+
+* Docker & Docker Compose
+* MySQL Server (local or Docker)
+* Gemini API Key
+* Python 3.10+ (only for local setup)
+
+---
+
+# 📁 Required File Structure
+
+```text
+nl2sql/
+│
+├── docker-compose.yml
+├── .env
+├── 25TS09SRM_docker_backend.tar   (optional)
+├── 25TS09SRM_docker_frontend.tar  (optional)
 ```
+
+---
+
+# 🌐 METHOD 1: Docker Hub Deployment (Recommended)
+
+---
+
+## Step 1 — Create Folder
+
+```bash
 mkdir nl2sql
 cd nl2sql
 ```
 
 ---
 
-# Step 2 — Create `.env` File
+## Step 2 — Create `.env`
 
-Create `.env` file:
-
-```
-
-DB_USER = ""
-DB_PASS = ""  
-DB_HOST = "host.docker.internal"
-DB_PORT = ""
-DB_NAME = ""
+```env
+DB_USER=root
+DB_PASS=your_password
+DB_HOST=host.docker.internal
+DB_PORT=3306
+DB_NAME=your_database
 
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ---
 
-# Step 3 — Create docker-compose.yml
+## 🧠 Database Configuration Notes
 
+You can use either:
+
+### 🔹 Local MySQL (Recommended)
+
+```env
+DB_HOST=host.docker.internal
+DB_PORT=3306
 ```
+
+👉 Ensure MySQL is running locally.
+
+---
+
+### 🔹 Docker MySQL
+
+```env
+DB_HOST=mysql
+DB_PORT=3306
+```
+
+👉 Use only if MySQL is added as a Docker service.
+
+---
+
+⚠️ Do NOT use:
+
+```env
+DB_HOST=localhost
+```
+
+(inside Docker, this refers to the container itself)
+
+---
+
+## Step 3 — Create `docker-compose.yml`
+
+```yaml
 version: "3.9"
 
 services:
 
   backend:
-    image: abhay2kumar/nl2sql-backend
+    image: abhay2kumar/25ts09srm-nl2sql-backend
+    container_name: fastapi_backend
     ports:
       - "8000:8000"
     env_file:
       - .env
-    restart: always
+    restart: unless-stopped
 
   frontend:
-    image: abhay2kumar/nl2sql-frontend
+    image: abhay2kumar/25ts09srm-nl2sql-frontend
+    container_name: streamlit_frontend
     ports:
       - "8501:8501"
     env_file:
@@ -167,122 +224,220 @@ services:
       - BACKEND_URL=http://backend:8000
     depends_on:
       - backend
-    restart: always
+    restart: unless-stopped
 ```
 
 ---
 
-# Step 4 — Start Application
+## Step 4 — Run
 
-```
+```bash
 docker-compose up
 ```
 
-Docker will automatically download the images from Docker Hub.
+---
+
+## Step 5 — Access
+
+* Frontend → http://localhost:8501
+* Backend → http://localhost:8000
 
 ---
 
-# Step 5 — Access Application
+---
 
-Frontend:
-
-```
-http://localhost:8501
-```
-
-Backend:
-
-```
-http://localhost:8000
-```
-
-Health Check:
-
-```
-http://localhost:8000/
-```
+# 📦 METHOD 2: Offline Deployment (.tar)
 
 ---
 
-# Step 6 — Stop Application
+## Step 1 — Place Files
 
-```
-docker-compose down
+```text
+25TS09SRM_docker_backend.tar
+25TS09SRM_docker_frontend.tar
+docker-compose.yml
+.env
 ```
 
 ---
 
-# Part 3 — Alternative: Run Without docker-compose
+## Step 2 — Load Images
 
-Backend:
+```bash
+docker load -i 25TS09SRM_docker_backend.tar
+docker load -i 25TS09SRM_docker_frontend.tar
+```
 
-```
-docker run -d -p 8000:8000 --env-file .env abhay2kumar/nl2sql-backend
-```
-
-Frontend:
-
-```
-docker run -d -p 8501:8501 --env-file .env -e BACKEND_URL=http://host.docker.internal:8000 abhay2kumar/nl2sql-frontend
-```
 ---
 
-### Setting up the project
+## Step 3 — Verify
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports.git
-   cd QueryBasedReports
-   ```
+```bash
+docker images
+```
 
-2. **Configure environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Edit `.env` with your configuration:
-   ```env
-   # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_NAME=query_reports
-   DB_USER=root
-   DB_PASS=your_password
-   
-   # AI Configuration
-   GEMINI_API_KEY=your_key_here
-   ```
+Expected:
 
-3. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+```text
+abhay2kumar/25ts09srm-nl2sql-backend
+abhay2kumar/25ts09srm-nl2sql-frontend
+```
 
-4. **Set up the database**
-   ```bash
-   # Create database
-   mysql -u root -p -e "CREATE DATABASE query_reports;"
-   ```
-5. **Set up Virtual Environment**
-   ```bash
-   python3.10 -m venv venv
-   # Activate the environment
-   # On Windows (PowerShell / CMD):
-   venv\Scripts\activate
-   # On macOS / Linux:
-   source venv/bin/activate
+---
 
-5. **Run the backend**
-   ```bash
-   cd backend
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
+## Step 4 — Update docker-compose.yml
 
-6. **Run the frontend**
-   ```bash
-   cd frontend
-   streamlit run app.py
-   ```
+```yaml
+version: "3.9"
+
+services:
+
+  backend:
+    image: abhay2kumar/25ts09srm-nl2sql-backend:latest
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  frontend:
+    image: abhay2kumar/25ts09srm-nl2sql-frontend:latest
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+```
+
+---
+
+## Step 5 — Run
+
+```bash
+docker-compose up
+```
+
+---
+
+---
+
+# 🔧 METHOD 3: Local Development Setup
+
+---
+
+## Step 1 — Clone Repository
+
+```bash
+git clone https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports.git
+cd QueryBasedReports
+```
+
+---
+
+## Step 2 — Setup Environment
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=query_reports
+DB_USER=root
+DB_PASS=your_password
+
+GEMINI_API_KEY=your_key_here
+```
+
+---
+
+## Step 3 — Virtual Environment
+
+```bash
+python3.10 -m venv venv
+
+# Activate
+source venv/bin/activate
+```
+
+---
+
+## Step 4 — Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Step 5 — Setup Database
+
+```bash
+mysql -u root -p -e "CREATE DATABASE query_reports;"
+```
+
+---
+
+## Step 6 — Run Backend
+
+```bash
+cd backend
+uvicorn app.main:app --reload
+```
+
+---
+
+## Step 7 — Run Frontend
+
+```bash
+cd frontend
+streamlit run app.py
+```
+
+---
+
+---
+
+# 🧪 TROUBLESHOOTING
+
+---
+
+## Port already in use
+
+```bash
+lsof -i :8501
+kill <PID>
+```
+
+---
+
+## Backend not connecting
+
+* Check `.env`
+* Ensure MySQL is running
+* Ensure correct `DB_HOST`
+
+---
+
+## YAML errors
+
+```bash
+docker-compose config
+```
+
+---
+
+## Gemini API Error
+
+* Free tier limit reached
+* Wait or reduce requests
 
 ---
 
