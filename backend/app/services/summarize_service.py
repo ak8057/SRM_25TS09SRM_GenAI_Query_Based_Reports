@@ -1,4 +1,3 @@
-from sqlalchemy import text
 from utils.db import get_engine_for_db
 from langchain_google_genai import ChatGoogleGenerativeAI
 import pandas as pd
@@ -21,7 +20,10 @@ def summarize_sql_result(sql_query: str, db_name: str):
     """
     try:
         engine = get_engine_for_db(db_name)
-        df = pd.read_sql(text(sql_query), con=engine)
+        query = sql_query
+        print("FINAL QUERY:", query)
+        with engine.connect() as conn:
+            df = pd.read_sql(query, conn)
 
         if df.empty:
             return {"summary": "No data returned for this query.", "chart_json": None}

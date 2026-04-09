@@ -1,8 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from app.services.summarize_service import summarize_sql_result
+from utils.sql_readonly_validator import is_read_only_query
+import logging
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 class SummarizeRequest(BaseModel):
     db_name: str
@@ -11,6 +14,10 @@ class SummarizeRequest(BaseModel):
 @router.post("/")
 def summarize_query(request: SummarizeRequest):
     try:
+        if not is_read_only_query(request.sql_query):
+            logger.warning("Rejected non-read-only query in summarize API: %s", request.sql_query)
+            raise HTTPException(status_code=400, detail="Only read-only queries are allowed")
+
         result = summarize_sql_result(request.sql_query, request.db_name)
         if "error" in result:
             # Handle quota exceeded errors with appropriate status code

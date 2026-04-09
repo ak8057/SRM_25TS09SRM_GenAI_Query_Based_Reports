@@ -389,7 +389,7 @@ mysql -u root -p -e "CREATE DATABASE query_reports;"
 
 ```bash
 cd backend
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 ---

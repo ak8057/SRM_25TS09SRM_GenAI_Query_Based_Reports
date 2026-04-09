@@ -1,11 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from utils.db import get_engine_for_db
+from utils.sql_readonly_validator import is_read_only_query
 import pandas as pd
 import numpy as np
+import logging
 import traceback, json
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 class QueryRequest(BaseModel):
@@ -16,6 +19,10 @@ class QueryRequest(BaseModel):
 @router.post("/")
 def execute_query(request: QueryRequest):
     try:
+        if not is_read_only_query(request.sql_query):
+            logger.warning("Rejected non-read-only query in execute API: %s", request.sql_query)
+            raise HTTPException(status_code=400, detail="Only read-only queries are allowed")
+
         engine = get_engine_for_db(request.db_name)
         with engine.connect() as conn:
             df = pd.read_sql(request.sql_query, conn)
@@ -59,6 +66,8 @@ def execute_query(request: QueryRequest):
 
         return response
 
+    except HTTPException:
+        raise
     except Exception as e:
         traceback.print_exc()
         return {"status": "error", "detail": str(e)}
