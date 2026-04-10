@@ -1,3 +1,43 @@
+<div align="center">
+  <img src="./frontend/public/logo.jpeg" alt="Project Logo" width="120" />
+</div>
+
+<table align="center">
+<tr>
+<td align="center">
+<img src="https://via.placeholder.com/420x240?text=Dashboard+Preview" width="420"/>
+</td>
+<td align="center">
+<img src="https://via.placeholder.com/180x240?text=Architecture" width="180"/>
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+<img src="https://readme-typing-svg.demolab.com?font=Syne&weight=700&size=18&pause=1200&color=38BDF8&center=true&vCenter=true&width=700&lines=Ask+questions.+Get+SQL.;Turn+data+into+insights+instantly.;AI-powered+NL2SQL+with+RAG.;From+raw+files+to+queryable+databases." />
+
+<br/>
+
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-4285F4?style=flat-square&logo=google&logoColor=white)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-8E44AD?style=flat-square)
+![MySQL](https://img.shields.io/badge/MySQL-00758F?style=flat-square&logo=mysql&logoColor=white)
+
+</div>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png" width="100%">
+
+<div align="center">
+
+## 🤖 Intelligent NL2SQL & Data Ingestion System
+
+*Transform unstructured data into structured databases and query them using natural language.*
+
+</div>
+
+---
 # Query Based Report
 
 *Transform your Excel data into intelligent, queryable insights*
@@ -719,9 +759,45 @@ The system is built using a modern, scalable, and modular technology stack that 
 - 📊 **Streamlit** delivers a fast and intuitive user interface  
 
 ---
+## 👥 Team
 
+<br/>
 
+<table align="center">
+<tr>
 
-*Built for intelligent data analysis and insights.*
+<td align="center" width="160">
+<!-- <img src="https://via.placeholder.com/120" width="120" height="120" style="border-radius:50%;" /> -->
+<br/><b>Abhay Kumar</b>
+<!-- <br/><sub>Backend & AI Systems</sub> -->
+</td>
 
+<td align="center" width="160">
+<!-- <img src="https://via.placeholder.com/120" width="120" height="120" style="border-radius:50%;" /> -->
+<br/><b>Akshit Bhatt</b>
+<!-- <br/><sub>Frontend</sub> -->
+</td>
+
+<td align="center" width="160">
+<!-- <img src="https://via.placeholder.com/120" width="120" height="120" style="border-radius:50%;" /> -->
+<br/><b>Vishnu Gupta</b>
+<!-- <br/><sub>ML / Data</sub> -->
+</td>
+
+<td align="center" width="160">
+<!-- <img src="https://via.placeholder.com/120" width="120" height="120" style="border-radius:50%;" /> -->
+<br/><b>Akshat Baranwal</b>
+<!-- <br/><sub>System Design</sub> -->
+</td>
+
+</tr>
+</table>
+
+<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png" width="100%">
+
+<div align="center">
+
+<img src="https://readme-typing-svg.demolab.com?font=Syne&weight=700&size=15&pause=2000&color=38BDF8&center=true&vCenter=true&width=700&lines=Upload.+Understand.+Query.;AI+that+turns+data+into+decisions.;From+files+to+insights+in+seconds." />
+
+</div>
 
