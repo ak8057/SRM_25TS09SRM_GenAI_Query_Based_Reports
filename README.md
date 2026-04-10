@@ -40,6 +40,73 @@ Think of it as giving your spreadsheets a brain.
 
 ---
 
+## 4.1 Data Ingestion Pipeline
+
+When a user uploads a file, a **multi-stage intelligent ingestion pipeline** is triggered to transform unstructured or semi-structured data into queryable database schemas.
+
+### 🔄 Pipeline Overview (Enhanced with Chunking & Embedding Optimization)
+
+| Stage | Step | Detail |
+|------|------|--------|
+| 1 | File Upload | User uploads file (Excel / CSV / PDF ) via Streamlit UI |
+| 2 | Text Extraction | Format-specific parsers (e.g., pdfplumber, pandas) extract raw content, headers, and structure |
+| 3 | Chunking (NEW) | Large documents are split into semantic chunks to preserve context and improve LLM understanding |
+| 4 | Schema Inference | Gemini LLM analyzes extracted chunks to infer table name, column names, and data types |
+| 5 | Schema Consolidation (NEW) | Chunk-level schemas are merged into a unified global schema representation |
+| 6 | Schema Embedding | MiniLM model generates vector embeddings from the inferred schema description |
+| 7 | Schema Matching | Embedding is compared (cosine similarity) against existing schema embeddings in ChromaDB |
+| 8a | Existing Table Path | If similarity ≥ `TABLE_THRESHOLD`: <br>• Insert data into existing table <br>• Detect schema drift → apply `ALTER TABLE` if needed |
+| 8b | New Table Path | If similarity < `TABLE_THRESHOLD`: <br>• Create new table using inferred schema <br>• Insert data via SQLAlchemy |
+| 9 | Data Insertion Optimization (NEW) | Batch inserts + type normalization for efficient storage |
+| 10 | Schema Refresh | Final schema re-read from DB and embeddings updated in ChromaDB |
+| 11 | Metadata Logging (NEW) | Store ingestion metadata (source, timestamp, schema version) for traceability |
+
+---
+
+## 4.2 NL2SQL Query Pipeline
+
+When a user submits a natural language query, a **robust AI-powered query pipeline** executes to generate, validate, and return results.
+
+### ⚡ Pipeline Overview (Enhanced with RAG, Validation & Voice Input)
+
+| Stage | Step | Detail |
+|------|------|--------|
+| 1 | Query Input | User enters query via text |
+| 2 | Auth / RBAC | Role-Based Access Control validates user permissions and restricts accessible databases |
+| 3 | Query Preprocessing (NEW) | Clean and normalize input (remove noise, handle synonyms, basic intent shaping) |
+| 4 | Query Embedding | MiniLM model converts user query into a 384-dimensional vector embedding |
+| 5 | Schema Retrieval (RAG) | Top-k relevant tables and columns retrieved from ChromaDB using cosine similarity |
+| 6 | Few-Shot Retrieval (RAG) | Top-k similar historical NL→SQL examples retrieved from few-shot vector store |
+| 7 | Context Chunk Selection (NEW) | Relevant schema chunks are selected to reduce token usage and improve accuracy |
+| 8 | Prompt Construction | RAG Prompt Builder assembles: <br>• User query <br>• Retrieved schema context <br>• Few-shot examples |
+| 9 | SQL Generation | Prompt sent to Gemini 2.5 Flash → LLM generates SQL query |
+| 10 | SQL Validation (Guardrails) | Enforces read-only constraints: <br>• Blocks DROP / DELETE / UPDATE <br>• Fixes syntax via retry <br>• Prevents unsafe queries |
+| 11 | SQL Execution | Validated SQL executed via SQLAlchemy on MySQL |
+| 12 | Result Serialization | DataFrame cleaned (NaN, datetime, types) and converted to JSON-safe format |
+| 13 | Post-Processing | Optional SQL→NL summarization using LLM |
+| 14 | Visualization | Results displayed via tables + Plotly charts |
+| 15 | Feedback Loop (NEW) | Query + SQL pair stored for improving few-shot retrieval over time |
+
+---
+
+## 🔐 Safety & Optimization Layers
+
+### ✅ Query Safety
+- Read-only SQL enforcement (SELECT / SHOW / EXPLAIN only)
+- Multi-layer validation (regex + execution guardrails)
+
+### ⚡ Performance Optimizations
+- Global embedding model loading (avoids repeated initialization)
+- Chunk-based RAG (reduces token usage)
+- Cached schema embeddings (ChromaDB)
+
+### 🧠 Intelligence Enhancements
+- Few-shot learning with dynamic retrieval
+- Schema-aware prompt construction
+- Automatic schema evolution handling
+
+---
+
 ## Project Structure
 
 ```
@@ -506,62 +573,39 @@ Simply type questions in plain English:
 
 ---
 
-## Technologies Used
+## 🛠️ Technology Stack
 
-### Backend
-- **FastAPI** - Modern, high-performance web framework
-- **SQLAlchemy** - SQL toolkit and ORM
-- **MySQL / PostgreSQL** - Relational database
-- **ChromaDB** - Vector database for embeddings
-- **HuggingFace Embedding Model** - Semantic search and matching
-- **Gemini LLM** - Natural language understanding
+The system is built using a modern, scalable, and modular technology stack that enables efficient data ingestion, intelligent query processing, and interactive visualization.
 
-### Frontend
-- **Streamlit** - Interactive Python web interface
-- **REST API Integration** - Seamless backend communication
+### 📊 Stack Overview
 
-### Infrastructure
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-
----
-
-## Documentation
-
-### API Endpoints
-
-<details>
-<summary>View available endpoints</summary>
-
-#### Data Ingestion
-- `POST /upload/excel` - Upload and process Excel/CSV files
-- `POST /ingest/intelligent` - Intelligent data ingestion
-
-#### Querying
-- `POST /nl2sql` - Convert natural language to SQL
-- `POST /execute` - Execute SQL query
-- `POST /summarize` - Generate result summary
-
-#### Schema Management
-- `GET /db/meta` - Get database metadata
-- `POST /refresh/schema` - Refresh schema embeddings
-
-#### Debugging
-- `GET /debug/chroma` - Debug ChromaDB collections
-
-</details>
+| Category | Technology | Version | Purpose |
+|----------|-----------|--------|--------|
+| Backend Framework | FastAPI | Latest | REST API + async processing |
+| Frontend | Streamlit | Latest | Interactive web UI |
+| LLM | Google Gemini | 2.5 Flash | SQL generation & summarization |
+| Embedding Model | HuggingFace MiniLM | all-MiniLM-L6-v2 | Semantic similarity search |
+| Vector Database | ChromaDB | Latest | Schema & few-shot storage |
+| Relational Database | MySQL | 8.x | Structured data storage |
+| ORM | SQLAlchemy | Latest | Database abstraction layer |
+| Containerization | Docker | Latest | Service isolation |
+| Orchestration | Docker Compose | 3.9 | Multi-service management |
+| PDF Parsing | pdfplumber | Latest | Text & table extraction from PDFs |
 
 ---
 
-##  Troubleshooting
+### 🔍 Key Highlights
 
-| Issue | Solution |
-|-------|----------|
-| Database not connecting | Verify `.env` configuration and ensure database is running |
-| Embeddings not loading | Install required model dependencies: `pip install sentence-transformers` |
-| Incorrect AI responses | Refresh schema and clear few-shot cache |
-| File ingestion errors | Ensure files have proper headers and are not password-protected |
-| Docker issues | Run `docker-compose down -v` then restart with `docker-compose up --build` |
+- ⚡ **FastAPI** enables high-performance asynchronous APIs  
+- 🧠 **Gemini 2.5 Flash** powers intelligent SQL generation and summarization  
+- 🔎 **MiniLM Embeddings + ChromaDB** enable efficient semantic retrieval (RAG)  
+- 🗄️ **MySQL + SQLAlchemy** provide robust and scalable data management  
+- 🐳 **Docker & Docker Compose** ensure portability and reproducibility  
+- 📊 **Streamlit** delivers a fast and intuitive user interface  
+
+---
+
+
 
 *Built for intelligent data analysis and insights.*
 
