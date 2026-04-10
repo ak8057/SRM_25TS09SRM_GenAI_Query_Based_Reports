@@ -32,6 +32,121 @@ Think of it as giving your spreadsheets a brain.
 
 ---
 
+## 📂 Dataset Format Requirements & Supported Patterns
+
+```
+Testing Data is in the folder 
+
+root
+|-- Testing Dataset
+|   |-- Main_Test_Dataset
+|   |   |-- chrome
+|   |   |   |-- Chrome_Dataset.csv
+|   |   |   |-- File1_2008_2011.csv
+|   |   |   |-- File1_2008_2011.pdf
+
+```
+
+### 📌 Overview
+
+The system supports multiple data formats, but its performance depends heavily on how structured the input data is.
+
+> ⚠️ For best results, datasets should follow a **clear tabular structure** similar to relational database schemas.
+
+---
+
+### ✅ 1. Preferred Format (Highly Recommended)
+
+Structured tabular data (e.g., Excel/CSV) with clearly defined columns.
+
+#### ✔️ Example (Supported Format)
+
+| Year | Key Achievement | Adoption/Usage | Technical Challenges | Business/Cost Impact |
+|------|----------------|---------------|---------------------|----------------------|
+| 2012 | Became most-used browser | Market share increased | Memory footprint | Increased ad revenue |
+| 2013 | Chrome Apps launched | Improved adoption | Offline limitations | Ecosystem growth |
+
+✔ This format ensures:
+- Accurate schema inference  
+- Better embedding generation  
+- Reliable NL → SQL conversion  
+
+---
+
+### ✅ 2. Supported Semi-Structured Format (Conditionally Supported)
+
+The system can also process narrative or timeline-style data, such as:
+
+#### ✔️ Example
+
+``` 
+
+Google Chrome 
+In recent years, Chrome emphasized privacy controls and AI-enhanced productivity.
+
+2020 — Introduced tab grouping and performance throttling.
+2021 — Improved privacy controls and launched Manifest V3.
+2022 — Enhanced memory efficiency and introduced Journeys feature.
+2023 — Wider adoption among students and professionals.
+
+```
+
+
+✔ This works because:
+- The system uses **LLM-based parsing + chunking**
+- Temporal patterns (years, events) can be inferred into structured form
+
+---
+
+### ⚠️ Important Limitation
+
+> Semi-structured formats are **less reliable** than tabular formats.
+
+Possible issues:
+- Incorrect column inference  
+- Missing attributes (e.g., cost, adoption not clearly stated)  
+- Inconsistent schema across chunks  
+
+---
+
+### ❌ Unsupported / High-Risk Inputs
+
+- Completely unstructured paragraphs without patterns  
+- Data without consistent entities (e.g., mixed topics)  
+- Missing temporal or categorical structure  
+- No identifiable schema or repeated structure  
+
+---
+
+### 🧠 How the System Interprets Different Formats
+
+| Input Type | Processing Behavior | Reliability |
+|-----------|------------------|------------|
+| Structured Tables | Direct schema mapping | ⭐⭐⭐⭐⭐ |
+| Semi-Structured (Timelines, Logs) | Chunking + LLM inference | ⭐⭐⭐ |
+| Unstructured Text | Weak schema inference | ⭐ |
+
+---
+
+### 🛠️ Recommendation
+
+For **best accuracy and stability**:
+
+- ✔ Use Excel/CSV with clear columns  
+- ✔ Ensure consistent formatting across rows  
+- ✔ Avoid mixing multiple data types in one file  
+- ✔ Use semi-structured text only when necessary  
+
+---
+
+### 💡 Key Insight
+
+> The system is not just format-driven — it is **structure-driven**.  
+> The clearer the structure, the better the performance.
+
+
+---
+
 ## Project Workflow
 <img width="1393" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/05c1005e-b915-4501-8275-b33b5f08e141">
 
