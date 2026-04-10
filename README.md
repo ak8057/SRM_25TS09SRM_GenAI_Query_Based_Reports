@@ -1,9 +1,7 @@
 <div align="center">
   
-<img 
-  src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/67317990-5725-47a7-a277-cbe0e6ffe8b5" 
-  width="500"
-/>
+<img width="500" alt="Gemini_Generated_Image_fasty2fasty2fast-removebg-preview-Picsart-AiImageEnhancer (1)" src="https://github.com/user-attachments/assets/00ef231d-3034-4eab-aaee-a3245cee2572" />
+
 </div>
 
 
@@ -38,8 +36,12 @@
 
 ---
 ## Complete Project Demo and Explanation
-![mqdefault](https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38880/4db00dd3-6754-4ba0-99c6-798ecf3d0e3a)
 
+<img src="https://github.com/user-attachments/assets/bff544cb-be8e-4e6a-9bf8-a8748c499bfe"
+     alt="preview"
+     width="400"
+     height="225" />
+     
 https://youtu.be/5Ied6-Ck5FE
 
 Access to .tar files : https://drive.google.com/file/d/1MHhmeR5JtGZzQrHKU5jnFkd43a_EIXAQ/view?usp=sharing
@@ -180,12 +182,12 @@ For **best accuracy and stability**:
 
 
 ---
-
 ## Project Workflow
-<img width="1393" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/05c1005e-b915-4501-8275-b33b5f08e141">
+<img width="1430" height="1914" alt="Image" src="https://github.com/user-attachments/assets/e1a484dd-ab67-4c45-a8e6-ac083fcd2c76" />
 
 ## User Query Flow
-<img width="715" alt="image" src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/ef691bd8-ca86-44e7-ba7f-e80ebaa4c871">
+<img width="2786" height="1568" alt="Image" src="https://github.com/user-attachments/assets/dbad7d61-f1f8-4308-a67d-eeb2d286d00c" />
+
 
 ---
 
