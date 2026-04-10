@@ -1,17 +1,11 @@
 <div align="center">
-  <img src="./frontend/public/logo.jpeg" alt="Project Logo" width="120" />
+  
+<img 
+  src="https://github.ecodesamsung.com/SRIB-PRISM/QueryBasedReports/assets/38888/67317990-5725-47a7-a277-cbe0e6ffe8b5" 
+  width="500"
+/>
 </div>
 
-<table align="center">
-<tr>
-<td align="center">
-<img src="https://via.placeholder.com/420x240?text=Dashboard+Preview" width="420"/>
-</td>
-<td align="center">
-<img src="https://via.placeholder.com/180x240?text=Architecture" width="180"/>
-</td>
-</tr>
-</table>
 
 <div align="center">
 
