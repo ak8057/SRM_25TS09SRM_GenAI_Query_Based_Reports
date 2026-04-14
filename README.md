@@ -188,6 +188,90 @@ For **best accuracy and stability**:
 ## User Query Flow
 <img width="2786" height="1568" alt="Image" src="https://github.com/user-attachments/assets/dbad7d61-f1f8-4308-a67d-eeb2d286d00c" />
 
+```mermaid
+flowchart TD
+
+%% ==========================
+%% USER ENTRY
+%% ==========================
+A[User Frontend] --> B[FastAPI Backend NL2SQL Service]
+C[Auth RBAC] --> B
+
+%% ==========================
+%% RAG RETRIEVAL
+%% ==========================
+B --> D[Retrieve Schema Embeddings - Chroma]
+B --> E[Retrieve Few-shot Examples - Chroma]
+
+D --> F[RAG Prompt Builder]
+E --> F
+
+%% ==========================
+%% LLM + SQL GENERATION
+%% ==========================
+F --> G[LLM Gemini]
+G --> H{SQL Guards & Auto-correct}
+
+H --> I[SQL Execution - MySQL via SQLAlchemy]
+
+%% ==========================
+%% OUTPUT
+%% ==========================
+I --> J[Result Processing - SQL to NL]
+J --> K[Frontend Display]
+J --> L[Telemetry & Learning]
+
+%% ==========================
+%% AUTO-CORRECT LOOP
+%% ==========================
+I -- SQL Error --> H
+H -- Retry --> G
+
+%% ==========================
+%% FILE UPLOAD FLOW
+%% ==========================
+A --> M[Upload File - CSV/PDF/etc.]
+M --> N[Text Extractor]
+N --> O[LLM Schema Analyzer]
+
+O --> P[Embedding Model - MiniLM]
+P --> Q[Store Schema Embeddings - Chroma]
+
+%% ==========================
+%% SCHEMA MATCHING
+%% ==========================
+P --> R{Schema Match?}
+Q --> R
+
+R -->|High Similarity| S[Use Existing Table]
+R -->|Low Similarity| T[Create New Table]
+
+S --> U{Column Match?}
+U -->|Match| S
+U -->|New Columns| V[Alter Table]
+
+T --> W[Create Table]
+W --> S
+
+%% ==========================
+%% DATABASE OPERATIONS
+%% ==========================
+S --> I
+V --> I
+
+%% ==========================
+%% SCHEMA UPDATE LOOP
+%% ==========================
+I --> X[Extract Updated Schema]
+X --> P
+P --> Q
+
+%% ==========================
+%% LEARNING LOOP
+%% ==========================
+L --> Y[Dynamic Example Updater]
+Y --> E
+```
 
 ---
 
