@@ -273,6 +273,8 @@ L --> Y[Dynamic Example Updater]
 Y --> E
 ```
 
+<img width="2840" height="6138" alt="NotebookLM Mind Map" src="https://github.com/user-attachments/assets/51508fca-ebe3-4c2f-897e-d3f02a7228ea" />
+
 ---
 
 ## 4.1 Data Ingestion Pipeline
