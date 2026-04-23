@@ -298,6 +298,78 @@ When a user uploads a file, a **multi-stage intelligent ingestion pipeline** is 
 | 10 | Schema Refresh | Final schema re-read from DB and embeddings updated in ChromaDB |
 | 11 | Metadata Logging (NEW) | Store ingestion metadata (source, timestamp, schema version) for traceability |
 
+```mermaid
+flowchart TD
+
+%% ==========================
+%% ENTRY POINT
+%% ==========================
+A[Upload Request: file + db_name] --> B{File Type}
+B -->|xlsx / xls / csv| C[Structured File Pipeline]
+B -->|pdf| D[PDF Pipeline]
+B -->|other| Z[Error: Unsupported File Type]
+
+%% ==========================
+%% STRUCTURED FILE PIPELINE
+%% ==========================
+subgraph C_PIPE [Excel CSV Processing]
+C --> C1[Save temp file]
+C1 --> C2[Load into DataFrame]
+C2 --> C3[Data Cleaning<br>trim, normalize nulls, sanitize headers]
+C3 --> C4[LLM Analysis Gemini<br>table name and column mapping]
+C4 --> C5[Apply column mapping]
+end
+
+%% ==========================
+%% PDF PIPELINE
+%% ==========================
+subgraph D_PIPE [PDF Processing]
+D --> D1[Save temp PDF]
+D1 --> D2[Extract text using pdfplumber]
+D2 --> D3[Chunk text with overlap]
+D3 --> D4[LLM Extraction<br>rows, schema, primary key]
+D4 --> D5[Aggregate and deduplicate rows]
+D5 --> D6{Rows extracted}
+D6 -->|no| D7[Fallback extract table]
+D6 -->|yes| D8[Build DataFrame]
+D7 --> D8
+D8 --> D9[Clean and sanitize headers]
+end
+
+%% ==========================
+%% COMMON DATABASE PIPELINE
+%% ==========================
+C5 --> E
+D9 --> E
+
+subgraph DB_PIPE [Database and Schema Handling]
+E[Ensure DB exists] --> F[Generate fingerprint<br>headers, sample, filename]
+
+F --> G{Match existing table using Chroma}
+G -->|yes| H[Use matched table]
+G -->|no| I[Try name-based match]
+I -->|yes| H
+I -->|no| J[Create new table name]
+
+H --> K{Table exists}
+J --> K
+
+K -->|no| L[Create table replace]
+L --> M[Store fingerprint in Chroma]
+
+K -->|yes| N[Column alignment<br>embedding plus lexical]
+N --> O[Alter table for new columns]
+O --> P[Rename incoming columns]
+P --> Q[Schema coercion<br>type casting and cleanup]
+Q --> R[Append data]
+
+M --> S[Update schema embeddings]
+R --> S
+
+S --> T[Return success<br>table, rows, columns, metadata]
+end
+```
+
 ---
 
 ## 4.2 NL2SQL Query Pipeline
@@ -323,6 +395,67 @@ When a user submits a natural language query, a **robust AI-powered query pipeli
 | 13 | Post-Processing | Optional SQL→NL summarization using LLM |
 | 14 | Visualization | Results displayed via tables + Plotly charts |
 | 15 | Feedback Loop (NEW) | Query + SQL pair stored for improving few-shot retrieval over time |
+
+```mermaid
+flowchart TD
+
+A[POST api nl2sql<br>question, db_name, table_name] --> B[nl2sql_route]
+B --> C[generate_sql_from_nl]
+
+C --> D[Connect to DB using db_name]
+D --> E[Inspect table names]
+E --> F{Tables found}
+F -->|No| F1[Error no tables in DB]
+F -->|Yes| G[Load few shot Chroma]
+G --> H[Load schema embeddings]
+
+H --> I[Schema similarity search]
+I --> J[Get relevant tables]
+J --> K{Valid table_name provided}
+K -->|Yes missing| K1[Add selected table]
+K -->|No| L[Keep relevant tables]
+K1 --> L
+
+L --> M{Relevant tables empty}
+M -->|Yes| M1[Fallback first table]
+M -->|No| N[Use retrieved tables]
+M1 --> N
+
+N --> O[Build schema string<br>table and columns]
+O --> P[Retrieve top k examples]
+P --> Q{Examples missing}
+Q -->|Yes| Q1[Rebuild few shot store]
+Q -->|No| R[Use examples]
+Q1 --> R
+
+R --> S[Compose prompt<br>schema, examples, question]
+S --> T[Invoke Gemini]
+T --> U[Clean SQL output]
+
+U --> V{Contains percent symbol}
+V -->|Yes| V1[Escape percent to double percent]
+V -->|No| W[Keep SQL]
+V1 --> W
+
+W --> X[Return SQL response<br>status, tables, schema, query]
+F1 --> XERR[Return error]
+
+%% Execution path
+X --> Y[POST execute SQL]
+Y --> Z{Read only query}
+Z -->|No| Z1[Reject request]
+Z -->|Yes| AA[Execute using pandas]
+AA --> AB[Normalize result]
+AB --> AC[Return rows and metadata]
+
+classDef ok fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20;
+classDef warn fill:#fff8e1,stroke:#f9a825,color:#6d4c41;
+classDef err fill:#ffebee,stroke:#c62828,color:#b71c1c;
+
+class A,B,C,D,E,G,H,I,J,K,K1,L,M,M1,N,O,P,Q,Q1,R,S,T,U,V,V1,W,X,Y,AA,AB,AC ok;
+class Z warn;
+class F1,XERR,Z1 err;
+```
 
 ---
 
